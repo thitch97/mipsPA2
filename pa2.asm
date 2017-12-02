@@ -70,7 +70,47 @@ input_data:
     jr $ra
 
 
+find_start_end:
+    add $t0, $zero, $a0                 
 
+  start:  
+    lb $t1, 0($t0)                      
+    beq $t1, 10, end            
+    beq $t1, 0, end            
+    beq $t1, 32, incr_start_ptr
+    beq $t1, 44, incr_start_ptr
+  
+    addi $t2, $t0, 1                    
+    
+  comma:
+    lb $t1, 0($t2)                    
+    beq $t1, 10, shift_left              
+    beq $t1, 0, shift_left              
+    bne $t1, 44, incr_last_ptr 
+  
+    addi $t2, $t2, -1                  
+    
+  shift_left:
+    lb $t1, 0($t2)                     
+    beq $t1, 32, decr_last_ptr         
+    beq $t1, 0, decr_last_ptr 
+    beq $t1, 10, decr_last_ptr 
+
+    add $v0, $zero, $t0                 
+    add $v1, $zero, $t2                 
+    jr $ra
+
+  incr_start_ptr:
+    addi $t0, $t0, 1                    
+    j start
+
+  incr_last_ptr:
+    addi $t2, $t2, 1                   
+    j comma
+
+  decr_last_ptr:
+    addi $t2, $t2, -1                   
+    j shift_left
 
 
 
