@@ -234,7 +234,59 @@ subprogram2:
     add $ra, $zero, $s5                 
     jr $ra
 
+subprogram3:           
+    beq $a0, 1, print_NaN               
+    beq $a0, 2, print_too_large          
+    beq $a0, 3, print_decimal          
+    jr $ra
 
+  print_NaN:
+
+    la $a0, error_msg                                               
+    li $v0, 4                                                                        
+    syscall
+    la $a0, 44                   
+    li $v0, 11                                                                                           
+    syscall
+    jr $ra
+
+  print_too_large:
+    la $a0, too_large_msg            
+    li $v0, 4
+    syscall
+    la $a0, 44                   
+    li $v0, 11                                                                                           
+    syscall
+    jr $ra
+
+  print_decimal:
+   
+
+    addi $t0, $zero, 10000      
+    lw $t1, 0($sp)                        
+    addi $sp, $sp, 4                                      
+     
+    divu $t1, $t0                         
+    mflo $t2                          
+    mfhi $t3                            
+    
+    beq $t2, $zero, print_remainder     
+    
+  print_quotient:
+    add $a0, $zero, $t2                                                      
+    li $v0, 1                                                                                            
+    syscall
+
+  print_remainder:
+    add $a0, $zero, $t3                                                         
+    li $v0, 1                                                                 
+    syscall
+    la $a0, 44                   
+    li $v0, 11                                                                                           
+    syscall
+    
+
+    jr $ra
 
 
 
