@@ -1,28 +1,20 @@
 #-------------------------------------------------------------------------------------
 # Timothy Hitchener
 # Due: December 1, 2017
-# 
-# Registers:
-#
-#	
-#
-#
-#
-#
-#
 #-------------------------------------------------------------------------------------
 
 .data
-	inval_err: .asciiz "NaN" 		#output for invalid hex 
-	size_err: .asciiz "too large"	
-	newline: .asciiz "\n"			#stores new line for output
-	input: .space 1001				#allocated space for characters
+
+	error_msg: .asciiz "NaN"    #error message for invalid hexadecimal
+	too_large_msg: .asciiz "too large"
+	output_line: .asciiz "\n"			  #stores new line for output
+	input: .space 1001						#allocated space for characters
 
 .text
 main:
 	jal input_data
 	
-loop:
+loop: 					# main loop  
 	
 	jal find_start_end
     
@@ -52,12 +44,12 @@ loop:
     addi $a0, $s1, 1                    
     j loop
 
-end:
+end:					
 	li $v0, 10
 	syscall
 
 
-input_data:
+input_data:				
     la $a0, input                
     li $v0, 4
     syscall           
