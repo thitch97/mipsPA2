@@ -134,7 +134,7 @@ validity_check:
   incrChar:
     addi $t0, $t0, 1                    
     addi $t2, $t2, 1                  
-    bgt $t0, $a1, valid                
+    bgt $t0, $a1, valid               
     j is_valid
      
   not_a_number:
@@ -158,7 +158,45 @@ return:
 
 
 
+subprogram1:
+    addi $v0, $zero, 1                 
+    addi $t3, $zero, 16                 
 
+  ascii_to_hex:
+    bge $a2, 96, lower                  
+    bge $a2, 64, upper                
+    bge $a2, 47, number                 
+
+  lower:
+    addi $t0, $a2, -87                  
+    j calc_exp
+
+  upper:
+    addi $t0, $a2, -55                 
+    j calc_exp
+
+  number:
+    addi $t0, $a2, -48                  
+    j calc_exp
+
+  calc_exp:
+    sub $t1, $a0, $a1                  
+    addi $t1, $t1, -1                   
+
+  raise_to_exp:
+    beq $t1, $zero, multiply            
+
+    mult $v0, $t3                      
+    mflo $v0                           
+
+    addi $t1, $t1, -1                   
+    j raise_to_exp
+
+  multiply:
+    mult $v0, $t0                     
+    mflo $v0                            
+
+    jr $ra          
 
 
 
