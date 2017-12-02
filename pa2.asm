@@ -114,7 +114,47 @@ find_start_end:
 
 
 
+validity_check:
+    add $t2, $zero, $zero  
+                
 
+  is_valid:
+     
+    lb $t1, 0($t0)                    
+     
+ 
+    bge $t1, 103, not_a_number           
+    bge $t1, 96, incrChar        
+    bge $t1, 71, not_a_number          
+    bge $t1, 64, incrChar         
+    bge $t1, 58, not_a_number         
+    bge $t1, 47, incrChar         
+    j not_a_number
+
+  incrChar:
+    addi $t0, $t0, 1                    
+    addi $t2, $t2, 1                  
+    bgt $t0, $a1, valid                
+    j is_valid
+     
+  not_a_number:
+    addi $v0, $zero, 1                 
+    addi $v1, $zero, 0                 
+    jr $ra
+     
+  too_large:
+    addi $v0, $zero, 2                  
+    addi $v1, $zero, 0                 
+    jr $ra
+  
+  valid:
+    bgt $t2, 8, too_large      
+    addi $v0, $zero, 3                  
+    add $v1, $zero, $t2                 
+    jr $ra
+     
+return:
+    jr $ra  
 
 
 
