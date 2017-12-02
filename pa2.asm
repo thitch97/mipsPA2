@@ -198,7 +198,41 @@ subprogram1:
 
     jr $ra          
 
+subprogram2:
+    bne $a3, 3, return                  
+    add $t0, $zero, $a0                 
+    add $t1, $zero, $a1                 
+    add $t2, $zero, $a2                 
+    add $s6, $zero, $zero              
+    add $t4, $zero, $t0                 
+    add $t9, $zero, $zero               
 
+    
+    
+    add $s5, $zero, $ra                
+     
+  hexadecimal_conversion:     
+    
+    add $a0, $zero, $t2                 
+    add $a1, $zero, $s6                 
+    lb $a2, 0($t4)                      
+
+    jal subprogram1                    
+    
+    add $t9, $t9, $v0                   
+
+    
+    addi $t4, $t4, 1                    
+    addi $s6, $s6, 1                   
+    
+    blt $s6, $t2, hexadecimal_conversion     
+  
+  done:
+    addi $sp, $sp, -4                  
+    sw $t9, 0($sp)                      
+
+    add $ra, $zero, $s5                 
+    jr $ra
 
 
 
